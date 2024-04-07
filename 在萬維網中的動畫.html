@@ -1,0 +1,104 @@
+<!doctype html>
+<title>在萬維網中的動畫</title>
+<body>
+<h1>在萬維網中的動畫</h1>
+<p>
+作者：丁安立
+<p>
+在萬維網中，我們可以利用這三個東西來製作動畫：
+<ul>
+<li><code>document.timeline.currentTime</code>
+<li><code>requestAnimationFrame</code>
+<li><code>cancelAnimationFrame</code>
+</ul>
+<h2>範例 0：碼表</h2>
+<p>
+製作一個碼表，它有「開始」與「停止」兩個按鈕。在每次「開始」按鈕被按下之後，在下一次的「停止」按鈕被按下之前，它會實時地顯示從上次按下「開始」按鈕到現在過了多少毫秒。
+<pre>
+let afr=0
+let span=document.createElement('span')
+let startButton=document.createElement('button')
+startButton.onclick=()=>{
+    if(afr)
+        return
+    startButton.disabled=true
+    stopButton.disabled=false
+    let z=document.timeline.currentTime
+    let animate=t=>{
+        span.textContent=''+Math.floor(t-z)
+        afr=requestAnimationFrame(animate)
+    }
+    afr=requestAnimationFrame(animate)
+}
+startButton.textContent='開始'
+let stopButton=document.createElement('button')
+stopButton.disabled=true
+stopButton.onclick=()=>{
+    if(!afr)
+        return
+    startButton.disabled=false
+    stopButton.disabled=true
+    cancelAnimationFrame(afr)
+    afr=0
+}
+stopButton.textContent='中止'
+</pre>
+<script>
+let afr=0
+let span=document.createElement('span')
+let startButton=document.createElement('button')
+startButton.onclick=()=>{
+    if(afr)
+        return
+    startButton.disabled=true
+    stopButton.disabled=false
+    let z=document.timeline.currentTime
+    let animate=t=>{
+        span.textContent=''+Math.floor(t-z)
+        afr=requestAnimationFrame(animate)
+    }
+    afr=requestAnimationFrame(animate)
+}
+startButton.textContent='開始'
+let stopButton=document.createElement('button')
+stopButton.disabled=true
+stopButton.onclick=()=>{
+    if(!afr)
+        return
+    startButton.disabled=false
+    stopButton.disabled=true
+    cancelAnimationFrame(afr)
+    afr=0
+}
+stopButton.textContent='中止'
+document.body.appendChild(startButton)
+document.body.appendChild(stopButton)
+document.body.appendChild(span)
+</script>
+<p>
+其實大多數的動畫都與碼表的原理類似。一個砲彈飛行的動畫，繪製了時間的二次函數的碼表；一部電影，只是一個每一個瞬間都是一幅美麗畫像的碼表。
+<h2>其他 0：不動點組合子</h2>
+<p>
+這個東西我也不是很懂；不過我覺得這麼寫挺有趣的。
+<p>
+「範例 0：碼表」中的
+<pre>
+let animate=t=>{
+    console.log(t-z)
+    afr=requestAnimationFrame(animate)
+}
+afr=requestAnimationFrame(animate)
+</pre>
+<p>
+可以利用不動點組合子寫成這個樣子：
+<pre>
+afr=requestAnimationFrame(
+    (a=>(b=>a(a=>b(b)(a)))(b=>a(a=>b(b)(a))))
+    (animate=>t=>{
+        console.log(t-z)
+        afr=requestAnimationFrame(animate)
+    })
+)
+</pre>
+<p>
+我應該安排時間與精力搞懂這個東西。如果有人願意教我，可以來聯絡我，我會很感謝你。
