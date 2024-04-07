@@ -11,6 +11,12 @@
 <li><code>requestAnimationFrame</code>
 <li><code>cancelAnimationFrame</code>
 </ul>
+<p>
+我們可以透過 <code>document.timeline.currentTime</code> 取得現在的時間。這個時間是以毫秒為單位的。
+<p>
+我們可以透過 <code>requestAnimationFrame</code> 請求一個動畫幀。<code>requestAnimationFrame</code> 接收一個函數 <code>f</code> 作為引數。瀏覽器會在下次繪製畫面前呼叫 <code>f</code>。<code>requestAnimationFrame</code> 回傳一個非零整數，作為此請求的識別。
+<p>
+我們可以透過 <code>cancelAnimationFrame</code> 取消一個動畫幀請求。<code>cancelAnimationFrame</code> 接收一個請求的識別作為引數。它會取消傳入的識別所代表的請求。
 <h2>範例 0：碼表</h2>
 <p>
 製作一個碼表，它有「開始」與「停止」兩個按鈕。在每次「開始」按鈕被按下之後，在下一次的「停止」按鈕被按下之前，它會實時地顯示從上次按下「開始」按鈕到現在過了多少毫秒。
@@ -80,6 +86,8 @@ stopButton.onclick=()=>{
 stopButton.textContent='中止'
 </pre>
 <p>
+在瀏覽器呼叫被傳入 <code>requestAnimationFrame</code> 的函數時。會傳入 <code>document.timeline.currentTime</code> 作為引數。
+<p>
 其實大多數的動畫都與碼表的原理類似。一個砲彈飛行的動畫，繪製了時間的二次函數的碼表；一部電影，只是一個每一個瞬間都是一幅美麗畫像的碼表。
 <h2>練習 0：進度條</h2>
 <p>
@@ -104,7 +112,7 @@ stopButton.textContent='中止'
             cancelAnimationFrame(afr)
             let d=t-z
             z=t
-            zP=zP+(progress-zP)*Math.min(1,d/10000)
+            zP=zP+(progress-zP)*Math.min(1,d/1000)
         }else{
             z=t
             zP=progress
@@ -115,7 +123,7 @@ stopButton.textContent='中止'
         let animate=t=>{
             afr=0
             let d=t-z
-            innerDiv.style.width=(zP+(progress-zP)*Math.min(1,d/10000))+'%'
+            innerDiv.style.width=(zP+(progress-zP)*Math.min(1,d/1000))+'%'
             if(d<10000)
                 afr=requestAnimationFrame(animate)
         }
@@ -138,6 +146,10 @@ stopButton.textContent='中止'
     document.body.appendChild(resetButton)
 }
 </script>
+<p>
+每次按下「+10%」時，進度都會增加 10%，但是綠色區塊會花恰好 1 秒的時間擴張到當前的進度。
+<p>
+在綠色區塊正在擴張的途中，「+10%」與「歸零」都有可能被按下。
 <h2>其他 0：不動點組合子</h2>
 <p>
 這個東西我也不是很懂；不過我覺得這麼寫挺有趣的。
