@@ -99,10 +99,11 @@ stopButton.textContent='中止'
     let div=document.createElement('div')
     div.style.backgroundColor='#bfbfbf'
     div.style.height='30px'
+    div.style.overflow='hidden'
     let innerDiv=document.createElement('div')
     innerDiv.style.backgroundColor='#bfffbf'
     innerDiv.style.height='100%'
-    innerDiv.style.width='0%'
+    innerDiv.style.transform='translateX(-100%)'
     div.appendChild(innerDiv)
     let addButton=document.createElement('button')
     let z,zP
@@ -110,20 +111,19 @@ stopButton.textContent='中止'
         let t=document.timeline.currentTime
         if(afr){
             cancelAnimationFrame(afr)
-            let d=t-z
-            z=t
-            zP=zP+(progress-zP)*Math.min(1,d/1000)
-        }else{
-            z=t
+            zP=zP+(progress-zP)*Math.min(1,(t-z)/1000)
+        }else
             zP=progress
-        }
+        z=t
         progress+=10
         if(progress==100)
             addButton.disabled=true
         let animate=t=>{
             afr=0
             let d=t-z
-            innerDiv.style.width=(zP+(progress-zP)*Math.min(1,d/1000))+'%'
+            innerDiv.style.transform=`translateX(${
+                -100+zP+(progress-zP)*Math.min(1,d/1000)
+            }%)`
             if(d<10000)
                 afr=requestAnimationFrame(animate)
         }
@@ -138,6 +138,7 @@ stopButton.textContent='中止'
         }
         progress=0
         innerDiv.style.width='0%'
+        innerDiv.style.transform='translateX(-100%)'
         addButton.disabled=false
     }
     resetButton.textContent='歸零'
