@@ -152,28 +152,3 @@ stopButton.textContent='中止'
 每次按下「+10%」時，進度都會增加 10%，但是綠色區塊會花恰好 1 秒的時間擴張到當前的進度。
 <p>
 在綠色區塊正在擴張的途中，「+10%」與「歸零」都有可能被按下。
-<h2>其他 0：不動點組合子</h2>
-<p>
-這個東西我也不是很懂；不過我覺得這麼寫挺有趣的。
-<p>
-「範例 0：碼表」中的
-<pre>
-let animate=t=>{
-    console.log(t-z)
-    afr=requestAnimationFrame(animate)
-}
-afr=requestAnimationFrame(animate)
-</pre>
-<p>
-可以利用不動點組合子寫成這個樣子：
-<pre>
-afr=requestAnimationFrame(
-    (a=>(b=>a(a=>b(b)(a)))(b=>a(a=>b(b)(a))))
-    (animate=>t=>{
-        console.log(t-z)
-        afr=requestAnimationFrame(animate)
-    })
-)
-</pre>
-<p>
-我應該安排時間與精力搞懂這個東西。如果有人願意教我，可以來聯絡我，我會很感謝你。
