@@ -30,8 +30,6 @@ Email：anlialtting@gmail.com
     let span=document.createElement('span')
     let startButton=document.createElement('button')
     startButton.onclick=()=>{
-        if(afr)
-            return
         startButton.disabled=true
         stopButton.disabled=false
         let z=document.timeline.currentTime
@@ -45,12 +43,9 @@ Email：anlialtting@gmail.com
     let stopButton=document.createElement('button')
     stopButton.disabled=true
     stopButton.onclick=()=>{
-        if(!afr)
-            return
         startButton.disabled=false
         stopButton.disabled=true
         cancelAnimationFrame(afr)
-        afr=0
     }
     stopButton.textContent='停止'
     document.body.appendChild(startButton)
@@ -63,8 +58,6 @@ let afr=0
 let span=document.createElement('span')
 let startButton=document.createElement('button')
 startButton.onclick=()=>{
-    if(afr)
-        return
     startButton.disabled=true
     stopButton.disabled=false
     let z=document.timeline.currentTime
@@ -78,14 +71,11 @@ startButton.textContent='開始'
 let stopButton=document.createElement('button')
 stopButton.disabled=true
 stopButton.onclick=()=>{
-    if(!afr)
-        return
     startButton.disabled=false
     stopButton.disabled=true
     cancelAnimationFrame(afr)
-    afr=0
 }
-stopButton.textContent='中止'
+stopButton.textContent='停止'
 </pre>
 <p>
 在瀏覽器呼叫被傳入 <code>requestAnimationFrame</code> 的函數時。會傳入 <code>document.timeline.currentTime</code> 作為引數。
